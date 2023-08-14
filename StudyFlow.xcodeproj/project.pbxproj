@@ -54,6 +54,7 @@
 				5F96ED132A8AAF2F00DB9BB5 /* StudyFlowApp.swift */,
 				5F96ED152A8AAF2F00DB9BB5 /* ContentView.swift */,
 				5F96ED172A8AAF3200DB9BB5 /* Assets.xcassets */,
+				5F96ED212A8AAF6400DB9BB5 /* SSurvey Question Pages */,
 				5F96ED192A8AAF3200DB9BB5 /* Preview Content */,
 			);
 			path = StudyFlow;
@@ -65,6 +66,13 @@
 				5F96ED1A2A8AAF3200DB9BB5 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		5F96ED212A8AAF6400DB9BB5 /* SSurvey Question Pages */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "SSurvey Question Pages";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
