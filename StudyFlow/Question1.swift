@@ -12,7 +12,8 @@ struct Question1: View {
 @State private var answer = ""
     var body: some View {
         NavigationStack {
-            VStack{
+            VStack{ //Beginning of VStack
+                
                 Text("Please select the subject you would like to build a study plan for.")
                     .font(.title2)
                     .fontWeight(.bold)
@@ -26,16 +27,31 @@ struct Question1: View {
                 Text("Science and Math")
                 }
                 .padding()
-                Text(answer)
-                .padding()
-                
+            
                 Button (action: {
                 score += 3
-                answer = "Thank you for your response!"
+                answer = "Thank you for your response! Please proceed to the next question"
                 }) {
                 Text("Social Studies")
                 }
                 .padding()
+            
+                Button (action: {
+                score += 5
+                answer = "Thank you for your response! Please proceed to the next question"
+                }) {
+                Text("Languages")
+                }
+                .padding()
+            
+                Button (action: {
+                score += 7
+                answer = "Thank you for your response! Please proceed to the next question"
+                }) {
+                Text("Social Studies")
+                }
+                .padding()
+            
                 Text(answer)
                 .padding()
 
