@@ -27,7 +27,8 @@ struct Question1: View {
                 Text("Science and Math")
                 }
                 .padding()
-            
+                .foregroundColor(Color.yellow)
+                .buttonBorderShape(/*@START_MENU_TOKEN@*//*@PLACEHOLDER=shape: ButtonBorderShape@*/.automatic/*@END_MENU_TOKEN@*/)
                 Button (action: {
                 score += 3
                 answer = "Thank you for your response! Please proceed to the next question"
