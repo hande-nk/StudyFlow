@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct Question1: View {
-    var score = 0
+@State var score = 0
+@State private var answer = ""
     var body: some View {
         NavigationStack {
             VStack{
@@ -17,22 +18,28 @@ struct Question1: View {
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
                     .padding()
-                NavigationLink(destination: Question2()) {
-                    Text("Science and Math")
+                
+                Button (action: {
+                score += 1
+                answer = "Thank you for your response! Please proceed to the next question"
+                }) {
+                Text("Science and Math")
                 }
                 .padding()
-                NavigationLink(destination: Question2()) {
-                    Text("Social Studies")
+                Text(answer)
+                .padding()
+                
+                Button (action: {
+                score += 3
+                answer = "Thank you for your response!"
+                }) {
+                Text("Social Studies")
                 }
                 .padding()
-                NavigationLink(destination: Question2()) {
-                    Text("Languages")
-                }
+                Text(answer)
                 .padding()
-                NavigationLink(destination: Question2()) {
-                    Text("Arts")
-                }
-            }
+
+            } //End of VStack
             
         }
         
