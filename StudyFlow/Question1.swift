@@ -29,39 +29,54 @@ struct Question1: View {
                         answer = "Thank you for your response! Please proceed to the next question"
                     }) {
                         Text("Science and Math")
+                            .fontWeight(.semibold)
                     }
                     .padding()
-                    .background(Capsule().foregroundColor(.white))
-                    .border(.black, width: 2)
-                    .cornerRadius(14)
-//                    .background(Capsule()
-//                        .foregroundColor(.black))
-//                    .buttonStyle(.borderedProminent)
-//                        .tint(Color("lightblue"))
+                                .background(.white)
+                                .foregroundColor(.black)
+                                .border(.black, width: 2)
+                                .cornerRadius(6)
                     Button (action: {
                         score += 3
                         answer = "Thank you for your response! Please proceed to the next question"
                     }) {
-                        Text("Social Studies")
+                        Text("Social Studies       ")
+                            .fontWeight(.semibold)
+
                     }
                     .padding()
+                    .background(.white)
+                    .foregroundColor(.black)
+                    .border(.black, width: 2)
+                    .cornerRadius(6)
                     
                     Button (action: {
                         score += 5
                         answer = "Thank you for your response! Please proceed to the next question"
                     }) {
-                        Text("Languages")
+                        Text("Languages            ")
+                            .fontWeight(.semibold)
+
                     }
                     .padding()
+                    .background(.white)
+                    .foregroundColor(.black)
+                    .border(.black, width: 2)
+                    .cornerRadius(6)
                     
                     Button (action: {
                         score += 7
                         answer = "Thank you for your response! Please proceed to the next question"
                     }) {
-                        Text("Social Studies")
+                        Text("Arts                         ")
+                            .fontWeight(.semibold)
+
                     }
                     .padding()
-                    
+                    .background(.white)
+                    .foregroundColor(.black)
+                    .border(.black, width: 2)
+                    .cornerRadius(6)
                     Text(answer)
                         .padding()
                     
