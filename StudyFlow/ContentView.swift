@@ -1,4 +1,4 @@
-//
+
 //  ContentView.swift
 //  StudyFlow
 //
@@ -7,14 +7,15 @@
 
 import SwiftUI
 import UIKit
+import CoreData
 
 struct ContentView: View {
-    class Assignment {
-        var id = 0
-        var subject = ""
-        var technique = ""
-        var completed = 0
-        var desciription = ""
+    struct Assignment: Identifiable {
+        var id: Int
+        var subject: String
+        var technique: String
+        var completed: Int
+        var desciription: String
         
         init(id: Int = 0, subject: String = "", technique: String = "", completed: Int = 0, desciription: String = "") {
             self.id = id
@@ -23,8 +24,8 @@ struct ContentView: View {
             self.completed = completed
             self.desciription = desciription
         }
-        
     }
+
     func seeAct(hw: Assignment) -> some View {
         ZStack(alignment: .topLeading) {
             Rectangle()
@@ -50,7 +51,7 @@ struct ContentView: View {
             .padding()
             
         }
-        .frame(width: 300, height: 140)
+        .frame(width: 200, height: 140)
     }
 
     func colorForCompletion(_ completion: Int) -> Color {
@@ -65,40 +66,67 @@ struct ContentView: View {
             return .green
         }
     }
-    func showStatus(hw: Assignment) -> some View {
+    func showStatus(hw: Binding<Assignment>) -> some View {
         ZStack(alignment: .leading) {
-            VStack{
-                Text(hw.subject)
+            VStack {
+                Text(hw.wrappedValue.subject)
                     .font(.title3)
                     .bold()
+                    .padding()
                     
-                Text(hw.desciription)
+                Text(hw.wrappedValue.desciription)
                     .font(.body)
                     .padding()
             }
-                Rectangle()
-                    .foregroundColor(.white)
-                    .frame(width: 300, height: 20)
-                    .cornerRadius(10)
-                    .shadow(radius: 5)
-
-                
-                if hw.completed > 0 {
-                    Capsule()
-                        .frame(width: CGFloat(hw.completed) * 3, height: 20)
-                        .foregroundColor(colorForCompletion(hw.completed))
-                        .shadow(radius: 2)
-                        
-                }
             
+            Rectangle()
+                .foregroundColor(.white)
+                .frame(width: 300, height: 20)
+                .cornerRadius(10)
+                .shadow(radius: 5)
+            
+            if hw.wrappedValue.completed > 0 {
+                Capsule()
+                    .frame(width: CGFloat(hw.wrappedValue.completed) * 3, height: 20)
+                    .foregroundColor(colorForCompletion(hw.wrappedValue.completed))
+                    .shadow(radius: 2)
+            }
         }
-        .frame(width: 300, height: 70)
+        .frame(width: 500, height: 70)
     }
 
-    var assignments = [
-        Assignment(id: 1, subject:"Study Maths", technique: "Pomodoro", completed: 90, desciription: "Some details"),
-        Assignment(id: 2, subject: "Practice CS", technique: "feynman", completed: 50, desciription: "practice for 1hr"),
-        Assignment(id: 1, subject:"Study Maths", technique: "Pomodoro", completed: 1, desciription: "Some details"),
+    func completeAssignment(assignment: Binding<Assignment>) {
+            assignment.wrappedValue.completed = 100
+    }
+
+    func listView(assignment: Binding<Assignment>) -> some View {
+        ZStack(alignment: .leading) {
+            HStack {
+                Text(assignment.wrappedValue.subject)
+                    .font(.caption)
+                    .bold()
+                    .padding()
+                Button(action: {
+                    completeAssignment(assignment: assignment)
+                }) {
+                    Text("Completed")
+                        .font(.caption)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+               Spacer()
+            }
+            .frame(width: 230)
+            
+        }
+    }
+    @State var assignments = [
+            Assignment(id: 1, subject: "Study Maths", technique: "Pomodoro", completed: 90, desciription: "Some details"),
+            Assignment(id: 2, subject: "Practice CS", technique: "feynman", completed: 50, desciription: "practice for 1hr"),
+            Assignment(id: 3, subject: "Study Science", technique: "Mind Maps", completed: 1, desciription: "Study for the test")
     ]
     var body: some View {
         ZStack{
@@ -113,7 +141,7 @@ struct ContentView: View {
                         .cornerRadius(15)
                         .shadow(radius: 15)
                         .padding()
-                        
+                    
                     Spacer()
                     Text("")
                     
@@ -123,7 +151,7 @@ struct ContentView: View {
                     ScrollView(.horizontal) {
                         HStack(spacing: 20) {
                             ForEach(assignments, id: \.id) { assignment in seeAct(hw: assignment)
-                                    .frame(width: 320)
+                                    .frame(width: 290)
                             }
                             .padding()
                         }
@@ -136,22 +164,45 @@ struct ContentView: View {
                     .padding()
                 HStack{
                     ScrollView(.horizontal) {
-                        HStack(spacing: 20) {
-                            ForEach(assignments, id: \.id) { assignment in showStatus(hw: assignment)
-                                    .frame(width: 320)
+                        HStack(spacing: 1) {
+                            ForEach($assignments) { $assignment in
+                                showStatus(hw: $assignment)
+                                    .frame(width: 340, height: 100)
                             }
-                            .padding()
+                            
                         }
                     }
                     
                 }
-                Spacer()
-                Text("")
-            }
-            VStack(alignment: .leading, spacing: 20.0){
                 
+                Text("")
+                VStack(alignment: .leading, spacing: 20.0) {
+                    NavigationLink(destination: newActivity()) {
+                        Text("Add a new activity")
+                            .bold()
+                            .padding()
+                    }
+                    .frame(width: 200, height: 50)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(15)
+                    .padding()
+                    VStack(spacing: 10) {
+                        ForEach($assignments) { $assignment in
+                            listView(assignment: $assignment)
+                                .frame(width: 340, height: 30)
+                        }
+                    }
+                    .frame(width: 230)
+                    .background(Color.white)
+                    .cornerRadius(15)
+                    .shadow(radius: 15)
+                    .padding()
                     
+                    
+                }
             }
+
         }
     }
 }
