@@ -106,6 +106,7 @@ struct ContentView: View {
                     .font(.caption)
                     .bold()
                     .padding()
+                Spacer()
                 Button(action: {
                     completeAssignment(assignment: assignment)
                 }) {
@@ -116,10 +117,13 @@ struct ContentView: View {
                         .background(Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(8)
+                        
                 }
                Spacer()
             }
             .frame(width: 230)
+            .background(.white)
+            .border(.black)
             
         }
     }
@@ -194,9 +198,6 @@ struct ContentView: View {
                         }
                     }
                     .frame(width: 230)
-                    .background(Color.white)
-                    .cornerRadius(15)
-                    .shadow(radius: 15)
                     .padding()
                     
                     
