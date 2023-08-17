@@ -9,6 +9,10 @@ import SwiftUI
 import UIKit
 import CoreData
 
+class GameSettings: ObservableObject {
+    @Published var score = 0
+}
+
 struct ContentView: View {
     struct Assignment: Identifiable {
         var id: Int
@@ -25,6 +29,8 @@ struct ContentView: View {
             self.desciription = desciription
         }
     }
+    @StateObject var settings = GameSettings()
+
 
     func seeAct(hw: Assignment) -> some View {
         ZStack(alignment: .topLeading) {
@@ -133,78 +139,81 @@ struct ContentView: View {
             Assignment(id: 3, subject: "Study Science", technique: "Mind Maps", completed: 1, desciription: "Study for the test")
     ]
     var body: some View {
-        ZStack{
-            Color(uiColor: UIColor(red: 255/255, green: 234/255, blue: 199/255, alpha: 1))
-                .ignoresSafeArea()
-            VStack(alignment: .leading){
-                HStack(alignment: .top){
-                    Image("img")
-                        .resizable()
-                        .aspectRatio(CGSize(width: 1, height: 1), contentMode: .fill)
-                        .frame(width: 80, height: 80)
-                        .cornerRadius(15)
-                        .shadow(radius: 15)
+        NavigationStack {
+            
+            ZStack{
+                Color(uiColor: UIColor(red: 255/255, green: 234/255, blue: 199/255, alpha: 1))
+                    .ignoresSafeArea()
+                VStack(alignment: .leading){
+                    HStack(alignment: .top){
+                        Image("img")
+                            .resizable()
+                            .aspectRatio(CGSize(width: 1, height: 1), contentMode: .fill)
+                            .frame(width: 80, height: 80)
+                            .cornerRadius(15)
+                            .shadow(radius: 15)
+                            .padding()
+                        
+                        Spacer()
+                        Text("")
+                        
+                    }
+                    
+                    HStack{
+                        ScrollView(.horizontal) {
+                            HStack(spacing: 20) {
+                                ForEach(assignments, id: \.id) { assignment in seeAct(hw: assignment)
+                                        .frame(width: 290)
+                                }
+                                .padding()
+                            }
+                        }
+                        
+                    }
+                    Text("Your Tasks")
+                        .font(.title)
+                        .bold()
                         .padding()
+                    HStack{
+                        ScrollView(.horizontal) {
+                            HStack(spacing: 1) {
+                                ForEach($assignments) { $assignment in
+                                    showStatus(hw: $assignment)
+                                        .frame(width: 340, height: 100)
+                                }
+                                
+                            }
+                        }
+                        
+                    }
                     
-                    Spacer()
                     Text("")
-                    
-                }
-                
-                HStack{
-                    ScrollView(.horizontal) {
-                        HStack(spacing: 20) {
-                            ForEach(assignments, id: \.id) { assignment in seeAct(hw: assignment)
-                                    .frame(width: 290)
-                            }
-                            .padding()
+                    VStack(alignment: .leading, spacing: 20.0) {
+                        NavigationLink(destination: newActivity()) {
+                            Text("Add a new activity")
+                                .bold()
+                                .padding()
                         }
-                    }
-                    
-                }
-                Text("Your Tasks")
-                    .font(.title)
-                    .bold()
-                    .padding()
-                HStack{
-                    ScrollView(.horizontal) {
-                        HStack(spacing: 1) {
+                        .frame(width: 200, height: 50)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(15)
+                        .padding()
+                        VStack(spacing: 10) {
                             ForEach($assignments) { $assignment in
-                                showStatus(hw: $assignment)
-                                    .frame(width: 340, height: 100)
+                                listView(assignment: $assignment)
+                                    .frame(width: 340, height: 30)
                             }
-                            
                         }
+                        .frame(width: 230)
+                        .padding()
+                        
+                        
                     }
-                    
                 }
                 
-                Text("")
-                VStack(alignment: .leading, spacing: 20.0) {
-                    NavigationLink(destination: newActivity()) {
-                        Text("Add a new activity")
-                            .bold()
-                            .padding()
-                    }
-                    .frame(width: 200, height: 50)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(15)
-                    .padding()
-                    VStack(spacing: 10) {
-                        ForEach($assignments) { $assignment in
-                            listView(assignment: $assignment)
-                                .frame(width: 340, height: 30)
-                        }
-                    }
-                    .frame(width: 230)
-                    .padding()
-                    
-                    
-                }
             }
-
-        }
+        }.environmentObject(settings)
     }
 }
 
